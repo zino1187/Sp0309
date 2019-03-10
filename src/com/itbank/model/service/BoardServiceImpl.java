@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.itbank.exception.RegistFailException;
 import com.itbank.model.domain.Board;
 import com.itbank.model.repository.BoardDAO;
 
@@ -23,14 +24,12 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public Board select(int board_id) {
-		// TODO Auto-generated method stub
-		return null;
+		return boardDAO.select(board_id);
 	}
 
 	@Override
-	public void insert(Board board) {
-		// TODO Auto-generated method stub
-		
+	public void insert(Board board) throws RegistFailException{
+		boardDAO.insert(board);
 	}
 
 	@Override

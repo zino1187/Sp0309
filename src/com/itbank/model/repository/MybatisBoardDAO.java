@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.itbank.exception.RegistFailException;
 import com.itbank.model.domain.Board;
 
 @Repository
@@ -26,14 +27,18 @@ public class MybatisBoardDAO implements BoardDAO{
 
 	@Override
 	public Board select(int board_id) {
-		// TODO Auto-generated method stub
-		return null;
+		return sessionTemplate.selectOne("Board.select", board_id);
 	}
 
-	@Override
-	public void insert(Board board) {
-		// TODO Auto-generated method stub
-		
+	/*개발자가 일부러 예외를 일으킨 이유는?
+	 * 에러가 발생햇음을 호출부까지 전달하기 위함이다..즉 전달하려면, 
+	 * 여기서 예외를 잡지(catch)말고, 메서드 호출자에게 책임을 떠넘기자..
+	 * */
+	public void insert(Board board) throws RegistFailException{
+		int result=sessionTemplate.insert("Board.insert", board);
+		if(result==0) {
+			throw new RegistFailException("등록에러");
+		}
 	}
 
 	@Override

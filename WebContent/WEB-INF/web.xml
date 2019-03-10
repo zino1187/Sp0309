@@ -25,7 +25,19 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>	
 
-	
+	<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	
 	<!-- 모든 요청을 하나의 진입점으로 몰아서 처리해야 하므로, 스프링이 정의한 
 	컨트롤러인 DispatcherServlet 을 등록해야한다!! 이때 모든 요청을 이 클래스로
