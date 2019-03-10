@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	<!-- 
+		스프링의 빈을 더 쉽게 관리하기 위해 설정파일을 간소화 시키는 방법을 적용 
+		@(어노테이션:Annotation , java5 버전부터 지원, 프로그램에 사용되는 주석)
+	-->
+	
+	<!-- 뷰매핑 등록  접두어+접미어 방식인 InternalResourdeViewResolver, -->
+	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver" 
+		p:prefix="/" p:suffix=".jsp"/>
+	<!-- 개발자가 컨트롤러 매핑을 등록하지 않으면 디폴트 DefaultAnnotationHandlerMapping
+		어노테이션이 선언된 모든 객체를 대상으로 자동으로 빈 등록!! 
+	-->	
+	<context:component-scan base-package="com.itbank"/>
+	
+	<!-- 모든 객체에 적용하고싶은 공통 기능을 어드바이스라한다
+		본 예제에서는 공통 기능이 Bell이다!!
+	 -->
+	<bean id="bell" class="com.itbank.aop.Bell"/>
+		 
+	<!-- 위에서 명시한 bell을 어디에 어느시점에 적용할지를 기술!! -->
+	<aop:config>
+		<aop:aspect id="bellAspect" ref="bell">
+			<aop:pointcut id="studentAction" 
+				expression="execution(public * com.itbank.aop..*(..))"/>
+				
+			<aop:before method="ding" pointcut-ref="studentAction"/>
+		</aop:aspect>
+	</aop:config>		 
+	
+</beans>
+
+
+
+
+
+

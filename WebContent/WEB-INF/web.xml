@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	<display-name>SpringMVC0309</display-name>
+	
+	<resource-ref>
+		<res-ref-name>jdbc/oracle</res-ref-name>
+		<res-type>javax.sql.DataSource</res-type>
+		<res-auth>Container</res-auth>
+	</resource-ref>
+	
+	<!-- 서블릿과 관련된 설정 파일이 아니라, 톰켓 서버가 가동될때 최초 한번만
+	빈들을 생성하는 영역의 context로 관리.. -->
+	
+	<!-- 톰켓이 가동될때..동작할 클래스 
+	Conext 란 ? 어플리케이션 영역, 범위 
+	ContextLoaderListener 프로그램이 가동될때 동작하는 클래스-->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:com/itbank/service/service-context.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>	
+
+	
+	
+	<!-- 모든 요청을 하나의 진입점으로 몰아서 처리해야 하므로, 스프링이 정의한 
+	컨트롤러인 DispatcherServlet 을 등록해야한다!! 이때 모든 요청을 이 클래스로
+	받아야 하므로, 매핑 그냥 / 로 지정한다 -->
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- 스프링 빈 설정파일의 위치를 지정 -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>WEB-INF/front-context.xml</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	
+</web-app>
+
+
+
+
+
+
+

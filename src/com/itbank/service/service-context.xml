@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+
+	<!-- 이 영역은 빈들 중에서도 공통 로직에 사용되는 빈을
+		별도로 관리하여 재사용성을 높이기 위함.. -->
+		
+	<!-- bean 태그를 사용하지 않고, 지정한 패키지내의 모든 객체를 검사하여
+	 적당한 어노테이션이 발견되면, 그 객체를 메모리에 올려준다 -->	
+	<context:component-scan base-package="com.itbank.model">
+	</context:component-scan>
+	
+	<!-- 스프링이 지원하는 데이터베이스 연동을 해야 하므로, 사용하고자
+	하는  데이터소스를 스프링이 주도하여 알아내야 한다!!
+	   -->
+	<jee:jndi-lookup 
+		jndi-name="jdbc/oracle" 
+		id="dataSource" 
+		resource-ref="true"/>
+		
+	<!-- 필수는 아니지만, 자동 트랜잭션 처리를 원하는 아래의 빈을 추가   
+		사용기술에 따라 트랜잭션 매니저는 여러 객체가 지원된다.
+		hibernate : HibernateTransactionManager 
+		jpa : JpaTransactionManager 
+		jdbc, mybatis : DataSourceTransactionManager
+		트랜잭션 매니져의 역할: 개발자가 소스 코드내에서 해당 기술에 맞게 일일이
+		commit 이나 rollback 하는 것이 아니라, 트랜잭션 매니저를 대상으로 
+		commiet, rollback을 하면 해당 기술에 맞춰서 알아서 중간에서 트랜잭션
+		을 처리해준다 ( 즉 트랜잭션을 추상화 시킴, 기술에 중립적으로...) 
+	-->
+	<bean id="dataSourceTransactionManager" 
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="dataSource"/>
+	
+	<!-- SqlSessoinTemplate 관리해주는 객체인 SqlSessionFactory를
+	등록 -->
+	<bean id="sqlSessionFactoryBean" 
+			class="org.mybatis.spring.SqlSessionFactoryBean"
+			p:dataSource-ref="dataSource"
+			p:configLocation="classpath:mybatis/config/config.xml"/>
+	
+	<bean id="sqlSessionTemplate" 
+		class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactoryBean"/>
+	</bean>
+		
+
+</beans>
+
+
+
+
+
+
+
+
