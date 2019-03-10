@@ -3,6 +3,7 @@ package com.itbank.model.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.itbank.exception.RegistFailException;
@@ -13,6 +14,8 @@ import com.itbank.model.repository.BoardDAO;
 public class BoardServiceImpl implements BoardService{
 	
 	@Autowired
+	@Qualifier("mybatisBoardDAO") //2개이상의 빈일 경우, 스프링이 구분을 못한다.. 
+	//사용하고자 하는 빈이름을 명시해야 한다 , 빈이름은 
 	private BoardDAO boardDAO;
 	
 	@Override
@@ -34,14 +37,15 @@ public class BoardServiceImpl implements BoardService{
 
 	@Override
 	public void update(Board board) {
-		// TODO Auto-generated method stub
-		
+		boardDAO.update(board);
 	}
 
 	@Override
 	public void delete(int board_id) {
-		// TODO Auto-generated method stub
-		
+		boardDAO.delete(board_id);
 	}
 	
 }
+
+
+

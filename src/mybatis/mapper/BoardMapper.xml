@@ -19,8 +19,9 @@
 	<delete id="delete" parameterType="int">
 		delete from board where board_id=#{board_id}
 	</delete>
+	
+	<update id="update" parameterType="Board">
+		update board set writer=#{writer}, title=#{title}, content=#{content}
+		where board_id=#{board_id}
+	</update>
 </mapper>
-
-
-
-

@@ -102,19 +102,17 @@ function del(){
 		//서버에 삭제 요청!!
 		location.href="/board/delete?board_id=<%=board.getBoard_id()%>";
 	}	
-	
+}
+function edit(){
+	if(confirm("수정하시겠어요?")){
+		$("form").attr({
+			"method":"post",
+			"action":"/board/edit"
+		});
+		$("form").submit();//전송!!
+	}
 }
 
-//오라클에 넣자?, 넣기를 요청하자?
-//클라이언트 스크립트 언어인 자바스크립트는 원본소스가 
-//사용자들의 pc로 다운받아져서 실행되므로 보안처리가 불가능하다
-//따라서 서버에 요청만 할 수 있다
-function regist(){
-	form1.method="post"; //내용이 많기 때문에 post방식으로
-	//보내야 한다...
-	form1.action="/board/insert";
-	form1.submit();//전송!!
-}
 </script>
 
 </head>
@@ -124,6 +122,7 @@ function regist(){
     <hr>
     
 	<form name="form1">
+		<input type="hidden" value="<%=board.getBoard_id()%>" name="board_id">
 	    <input type="text" value="<%=board.getWriter() %>" name="writer" required>
 	    <input type="text" value="<%=board.getTitle() %>" name="title" required>
 	    <textarea id="content" name="content" style="width:100%"><%=board.getContent()%></textarea>

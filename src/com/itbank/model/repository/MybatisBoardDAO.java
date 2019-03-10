@@ -43,14 +43,16 @@ public class MybatisBoardDAO implements BoardDAO{
 
 	@Override
 	public void update(Board board) {
-		// TODO Auto-generated method stub
-		
+		sessionTemplate.update("Board.update", board);
 	}
 
 	@Override
 	public void delete(int board_id) {
-		// TODO Auto-generated method stub
-		
+		sessionTemplate.update("Board.delete", board_id);
 	}
 	
 }
+
+
+
+

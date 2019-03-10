@@ -63,9 +63,19 @@ public class BoardController {
 	
 	@RequestMapping("/delete")
 	public String delete(int board_id) {
-		
+		boardService.delete(board_id);
 		return "redirect:/board/list"; //재접속!!
 	}
+	
+	@RequestMapping(value="/edit", method=RequestMethod.POST)
+	public String update(Board board , Model model) {
+		boardService.update(board);
+		//cotent.jsp 는 Board 객체가 넘어오기를 기다리므로, 
+		//Model 객체에 Board를 담아서 가져간다
+		model.addAttribute("board", board);//수정된 글을 담기!!
+		return "board/content";
+	}
+	
 	
 	//스프링에서 컨트롤러가 요청을 처리시 예외가 발생하면 이를 인지하여 호출해주는
 	//메서드를 정의할 수 있다. 
